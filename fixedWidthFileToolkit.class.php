@@ -19,14 +19,16 @@
 				        $firstRow = fgets($handle, 4096);
 	
 					// parse first row for field names, using two or more consecutive spaces
-					$this->$headers = preg_split('/(?:\s\s+|\n|\t)/', $headerRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
+					$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
 				}
 			}
 		}
 
 		public function dumpHeaders(){
 			
-			echo "<pre>" . var_dump($this->headers) . "</pre>";
+			echo "<pre>"; 
+			echo var_dump($this->headers);
+			echo "</pre>";
 		}
 
 	}
