@@ -1,8 +1,6 @@
 <?php
-	/*	NAME: Fixed Width File Toolkit
-		PURPOSE: 	*/
-
-	class FixedWidthFile() {
+	
+	class FixedWidthFile {
 		private $filename;
 		private $headers;
 
