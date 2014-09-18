@@ -6,9 +6,10 @@
 	// create a new instance of the class
 	$myFile = new FixedWidthFile();
 
-	// provide path and filename to readHeadersRow method
+	// provide filename to readHeadersRow method
 	$myFile->readHeaderRow('arrest-9-15-2014.txt');
 
 	// and lets see our results
 	$myFile->dumpHeaders();
+
 ?>
