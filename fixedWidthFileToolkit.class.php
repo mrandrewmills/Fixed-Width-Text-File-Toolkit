@@ -41,7 +41,7 @@
 			// verify file exists, no typos, etc.
 			if (file_exists($this->filename)) {
 				
-				// open the file
+				// open the file, suppressing any error messages with @
 				$handle = @fopen($filename, "r");
 				
 				// if we were successful in opening the file
@@ -59,15 +59,22 @@
 						echo "<p>";
 						
 						$fieldLength = strlen($buffer);
+						
+						$rowData = Array();
 
 						for ($x = $numFields - 1; $x >= 0; $x--) {
-							echo "<strong>" . $this->headers[$x][0] . ":</strong> ";
+							// echo "<strong>" . $this->headers[$x][0] . ":</strong> ";
 							$fieldLength = $fieldLength - $this->headers[$x][1];
-							echo substr($buffer, $this->headers[$x][1], $fieldLength);
+							$rowData[$this->headers[$x][0]] = substr($buffer, $this->headers[$x][1], $fieldLength);
 							// echo "( $fieldLength characters out of $totalLength total)";
-							echo "<br />";
+							
 							$fieldLength = $this->headers[$x][1];
 							}
+						
+						echo "<pre>"; 
+						echo var_dump($rowData);
+						echo "</pre>";
+						
 						echo "</p>";
     				}
     				
