@@ -60,11 +60,11 @@
 						
 						$fieldLength = strlen($buffer);
 
-						for ($x = $numFields - 1; $x > 0; $x--) {
+						for ($x = $numFields - 1; $x >= 0; $x--) {
 							echo "<strong>" . $this->headers[$x][0] . ":</strong> ";
 							$fieldLength = $fieldLength - $this->headers[$x][1];
 							echo substr($buffer, $this->headers[$x][1], $fieldLength);
-							echo "( $fieldLength characters out of $totalLength total)";
+							// echo "( $fieldLength characters out of $totalLength total)";
 							echo "<br />";
 							$fieldLength = $this->headers[$x][1];
 							}
