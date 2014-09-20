@@ -11,5 +11,8 @@
 
 	// and lets see our results
 	$myFile->dumpHeaders();
+	
+	// now let's get the data out of the file
+	$myFile->getDataOut('arrest-9-15-2014.txt');
 
 ?>
