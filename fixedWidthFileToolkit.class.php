@@ -52,27 +52,25 @@
 					
 					// and process the remaining rows of the file
 					while (($buffer = fgets($handle, 4096)) !== false) {
-        				// echo "<p>$buffer</p>";
-						// TODO: parse file based on character positions
+						
 						$numFields = count($this->headers);
 						
 						echo "<p>";
 						
+						// find out how long one line is
 						$fieldLength = strlen($buffer);
 						
 						$rowData = Array();
 
+						// working our way BACKWARDS through the array
 						for ($x = $numFields - 1; $x >= 0; $x--) {
-							// echo "<strong>" . $this->headers[$x][0] . ":</strong> ";
 							$fieldLength = $fieldLength - $this->headers[$x][1];
-							$rowData[$this->headers[$x][0]] = substr($buffer, $this->headers[$x][1], $fieldLength);
-							// echo "( $fieldLength characters out of $totalLength total)";
-							
+							$rowData[$this->headers[$x][0]] = rtrim(substr($buffer, $this->headers[$x][1], $fieldLength));
 							$fieldLength = $this->headers[$x][1];
 							}
 						
 						echo "<pre>"; 
-						echo var_dump($rowData);
+						echo json_encode($rowData); // TODO: let devs pick format of output
 						echo "</pre>";
 						
 						echo "</p>";
