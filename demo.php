@@ -7,12 +7,15 @@
 	$myFile = new FixedWidthFile();
 
 	// provide filename to readHeadersRow method
-	$myFile->readHeaderRow('arrest-9-15-2014.txt');
+        $myFile->readHeaderRow('arrest-11-21-2014.txt');
 
 	// and lets see our results
 	$myFile->dumpHeaders();
 	
 	// now let's get the data out of the file
-	$myFile->getDataOut('arrest-9-15-2014.txt');
+	$myFile->getDataOut('arrest-11-21-2014.txt');
+	
+	// and display the data
+	$myFile->dumpDataJSON();
 
 ?>
