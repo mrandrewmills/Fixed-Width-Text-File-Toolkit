@@ -3,7 +3,9 @@
 	class FixedWidthFile {
 		private $filename;
 		private $headers;
-
+		private $lineLength;
+		private $fileData;
+		
 		public function readHeaderRow($filename){
 
 			$this->filename = $filename;
@@ -34,6 +36,22 @@
 			echo "</pre>";
 		}
 		
+		public function dumpData(){
+			
+			echo "<pre>"; 
+			// echo json_encode($this->fileData);
+			// print_r($this->fileData);
+			echo var_dump($this->fileData);
+			echo "</pre>";
+		}
+		
+		public function dumpDataJSON(){
+			
+			echo "<pre>"; 
+			echo json_encode($this->fileData);
+			echo "</pre>";
+		}
+		
 		public function getDataOut($filename){
 			
 			$this->filename = $filename; // short term shortcut
@@ -52,11 +70,9 @@
 					
 					// and process the remaining rows of the file
 					while (($buffer = fgets($handle, 4096)) !== false) {
-						
+        					
 						$numFields = count($this->headers);
-						
-						echo "<p>";
-						
+												
 						// find out how long one line is
 						$fieldLength = strlen($buffer);
 						
@@ -64,19 +80,19 @@
 
 						// working our way BACKWARDS through the array
 						for ($x = $numFields - 1; $x >= 0; $x--) {
+							
 							$fieldLength = $fieldLength - $this->headers[$x][1];
+							
 							$rowData[$this->headers[$x][0]] = rtrim(substr($buffer, $this->headers[$x][1], $fieldLength));
+							
 							$fieldLength = $this->headers[$x][1];
 							}
-						
-						echo "<pre>"; 
-						echo json_encode($rowData); // TODO: let devs pick format of output
-						echo "</pre>";
-						
-						echo "</p>";
+
+						// when we've got the current row sorted, add it to the more permanent pile							
+						$this->fileData[] = $rowData;
     				}
     				
-					// unexpected file read termination
+				// unexpected file read termination
     				if (!feof($handle)) {
         				echo "Error: unexpected fgets() fail\n";
 						// TODO: create more robust error handling
