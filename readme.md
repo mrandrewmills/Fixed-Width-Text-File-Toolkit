@@ -12,7 +12,7 @@ Even if it were CSV you wouldn't be spending your afternoon writing custom code 
 	* do a series of string splits at a, b, c, d, etc. starting character positions 
 	* loading the data into an array to encode/transform it to a more useful format
 
-I created the "Fixed Width Text File Toolkit" so I'd have a set of useful functions that could quickly and easily analyze a fixed width text file, grab the field names from the header row, automagically (sic) determine the starting character position for each data field, and then convert that data over to a more useful format, such as JSON or XML.
+I created the "Fixed Width Text File Toolkit" so I'd have a set of useful functions that could quickly and easily analyze a fixed width text file, grab the field names from the header row, "automagically" (sic) determine the starting character position for each data field, and then convert that data over to a more useful format.
 
 ## Contents
 
