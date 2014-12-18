@@ -185,40 +185,6 @@
 			
 			return $JSONresult;
 		}
-		
-		// see http://stackoverflow.com/questions/1397036/how-to-convert-array-to-simplexml
-		function to_xml(SimpleXMLElement $object, array $data){   
-			foreach ($data as $key => $value)
-			    {   
-			        if (is_array($value))
-				        {   
-				            $new_object = $object->addChild($key);
-				            $this->to_xml($new_object, $value);
-				        }   
-			        else
-				        {   
-				            $object->addChild($key, $value);
-				        }   
-			    }   
-		}   
-
-		// ToDo: toCSV()? 
-		public function toCSV(){
-			return true;
-		}
-		
-		// ToDo: toSQL()?
-		public function toSQL() {
-			return true;
-		}
-		
-		public function getXML(){
-			$this->xml = new SimpleXMLElement('<array/>');
-
-			$this->to_xml($this->xml, $this->fileData); 
-
-			return $this->xml->asXML();
-		}
 
 	}
 ?>
