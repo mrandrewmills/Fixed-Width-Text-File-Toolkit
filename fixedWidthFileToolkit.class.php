@@ -15,6 +15,7 @@
 		private $headers;
 		private $lineLength = 4096; // default value, override with setFileLength() as needed
 		private $fileData;
+		private $xml;
 		
 		// ToDo: add some kind of error structure that can be accessed for last problem?
 		
@@ -58,7 +59,8 @@
 			
 			return $numRows;
 		}
-
+		
+		
 		// Our setters, but some of our properties are not meant to be accessible (i.e. internal use only)
 
 		public function setFilename($filename){
@@ -86,12 +88,12 @@
 			//ToDo: read the data from file into an array
 		}
 		
-		public function setFileLength($fileLength) {
+		public function setLineLength($lineLength) {
 		
 			// give developer means to override default fileLength value
 			
-			if (fileLength) {
-				$this->fileLength = $fileLength;
+			if (lineLength) {
+				$this->lineLength = $lineLength;
 			}
 			
 		}
@@ -108,7 +110,7 @@
 
 				if ($handle) {
 					// read only the first line
-				    $firstRow = fgets($handle, 4096);
+				    $firstRow = fgets($handle, $this->lineLength);
 	
 					// parse first row for field names, using two or more consecutive spaces
 					$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
@@ -137,10 +139,10 @@
 				if ($handle) {
 					
 					// then bypass the first line
-					$firstRow = fgets($handle, 4096);
+					$firstRow = fgets($handle, $this->lineLength);
 					
 					// and process the remaining rows of the file
-					while (($buffer = fgets($handle, 4096)) !== false) {
+					while (($buffer = fgets($handle, $this->lineLength)) !== false) {
         					
         					$numFields = count($this->headers);
 												
@@ -184,12 +186,21 @@
 			return $JSONresult;
 		}
 		
-		public function toXML(){
-			//ToDo: write code to convert PHP arrays into XML
-			$XMLresult = "";
-			
-			return $XMLresult;
-		}
+		// see http://stackoverflow.com/questions/1397036/how-to-convert-array-to-simplexml
+		function to_xml(SimpleXMLElement $object, array $data){   
+			foreach ($data as $key => $value)
+			    {   
+			        if (is_array($value))
+				        {   
+				            $new_object = $object->addChild($key);
+				            $this->to_xml($new_object, $value);
+				        }   
+			        else
+				        {   
+				            $object->addChild($key, $value);
+				        }   
+			    }   
+		}   
 
 		// ToDo: toCSV()? 
 		public function toCSV(){
@@ -200,5 +211,14 @@
 		public function toSQL() {
 			return true;
 		}
+		
+		public function getXML(){
+			$this->xml = new SimpleXMLElement('<array/>');
+
+			$this->to_xml($this->xml, $this->fileData); 
+
+			return $this->xml->asXML();
+		}
+
 	}
 ?>
