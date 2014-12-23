@@ -1,11 +1,13 @@
 <?php
-/**
- *	Fixed Width Text File Toolkit
- *	https://github.com/mrandrewmills/Fixed-Width-Text-File-Toolkit
- *
- *	PHP class to help extract information from fixed width text files as easily as possible.
- *
- */	
+	/**
+ 	 * Fixed Width Text File Toolkit
+	 *
+	 * PHP class to help extract information from fixed width text files as easily as possible.
+	 *
+	 * https://github.com/mrandrewmills/Fixed-Width-Text-File-Toolkit
+	 *
+	 *
+	 */	
 	
 	class FixedWidthFile {
 	
@@ -15,7 +17,6 @@
 		private $headers;
 		private $lineLength = 4096; // default value, override with setFileLength() as needed
 		private $fileData;
-		private $xml;
 		
 		// ToDo: add some kind of error structure that can be accessed for last problem?
 		
@@ -177,7 +178,7 @@
 			
 		}
 		
-		// Our "Conversion" functions
+		// Our "Conversion" function
 
 		public function toJSON(){
 			
