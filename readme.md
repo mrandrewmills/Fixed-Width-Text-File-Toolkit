@@ -26,6 +26,10 @@ Q. WHY DID YOU MAKE THIS WHEN THERE'S ALREADY "SUCH-AND-SUCH" AVAILABLE?
 
 A. I made this because I wanted to learn more about text-processing functions within PHP and wanted reusable code to deal with Fixed Width Text Files. I decided to share it with others because I'd like to see them improve upon my code and take it in directions that never would have occurred to me.
 
+Q. CAN THIS TOOLKIT WORK WITH REMOTE FILES OVER HTTP:// OR HTTPS://?
+
+A. The toolkit is intended for local files, not remote files. Although it might be possible with the correct fopen() wrappers, I don't recommend it.
+
 Q. CAN YOU ADD "SUCH-AND-SUCH" FEATURE?
 
 A. I don't know. It depends on the specifics of the feature, whether it makes sense to be part of this toolkit, and how difficult it would be to implement. Drop me a line explaining what you have in mind, and we can discuss it. However, just because I might not have time or inclination to add a feature that you want, that doesn't mean you can't add it yourself.
