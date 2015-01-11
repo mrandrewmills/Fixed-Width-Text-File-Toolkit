@@ -17,10 +17,10 @@
 		private $headers;
 		private $lineLength = 4096; // default value, override with setFileLength() as needed
 		private $fileData;
+		private $hasHeaderRow = true;
+	
 		
-		// ToDo: add some kind of error structure that can be accessed for last problem?
-		
-		// Our constructor function (used class name instead of __constructor to work with older versions of PHP)
+		// Our constructor uses class name instead of __constructor to work with older versions of PHP
 		
 		function FixedWidthFile($filename) {
 			
@@ -32,6 +32,7 @@
 			}
 			
 		}
+	
 		
 		// Our getters, no surprises here
 		
@@ -61,6 +62,10 @@
 			return $numRows;
 		}
 		
+		public function getHasHeaderRow(){
+			return $this->hasHeaderRow;
+		}
+		
 		
 		// Our setters, but some of our properties are not meant to be accessible (i.e. internal use only)
 
@@ -81,7 +86,8 @@
 				}
 				
 			else {
-				// ToDo: error reporting that file is not valid?
+				$errMsg = "$filename not found. Please verify path and filename.";
+				throw new Exception($errMsg);
 			}
 			
 			//ToDo: some kind of verification that we can access the file?
@@ -99,6 +105,10 @@
 			
 		}
 		
+		public function setHasHeaderRow($hasHeaderRow){
+			$this->hasHeaderRow = $hasHeaderRow;
+		}
+		
 		// Our "utility functions", for internal use only (thus private)
 		
 		private function readHeaderRow(){
@@ -111,20 +121,33 @@
 
 				if ($handle) {
 					// read only the first line
-				    $firstRow = fgets($handle, $this->lineLength);
+				    	$firstRow = fgets($handle, $this->lineLength);
 	
-					// parse first row for field names, using two or more consecutive spaces
-					$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
+					// if we believe our file has a header row, then . . .
+					if ($this->hasHeaderRow) {
+						// parse first row for field names, using two or more consecutive spaces
+						$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
+					}
+					else { // if we believe file does NOT have a header row
+						$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
+						$numFields = count($this->headers);
+						for ($x = 0; $x < $numFields; $x++) {
+							$this->headers[$x][0] = "Column" . ($x + 1) ;
+						}
+					}
 				
 					// close file when we're done
 					fclose($handle);
 				}
 				else {
-					//ToDo: error handling for file permissions issue, etc.
+					$errMsg = "Unable to open $filename. Please verify file permissions.";
+					throw new Exception($errMsg);
 				}
 			}
 			else {
 				// ToDo: error handling for bad file path, typo in filename, etc.
+				$errMsg = "$filename not found. Please verify path and filename.";
+				throw new Exception($errMsg);
 			}
 		}
 		
@@ -139,8 +162,10 @@
 				// if we were successful in opening the file
 				if ($handle) {
 					
-					// then bypass the first line
-					$firstRow = fgets($handle, $this->lineLength);
+					// does this file have a header row? If so, bypass it.
+					if ($this->hasHeaderRow) {
+						$firstRow = fgets($handle, $this->lineLength);
+						}
 					
 					// and process the remaining rows of the file
 					while (($buffer = fgets($handle, $this->lineLength)) !== false) {
@@ -181,9 +206,11 @@
 		// Our "Conversion" function
 
 		public function toJSON(){
+		
+			$JSONresult = "";
 			
 			$JSONresult = json_encode($this->fileData);
-			
+				
 			return $JSONresult;
 		}
 
