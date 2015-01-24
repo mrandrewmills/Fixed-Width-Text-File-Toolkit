@@ -14,9 +14,13 @@
 		// Our properties
 	
 		private $filename;
+
 		private $headers;
+
 		private $lineLength = 4096; // default value, override with setFileLength() as needed
+
 		private $fileData;
+
 		private $hasHeaderRow = true;
 	
 		
@@ -31,39 +35,54 @@
 				$this->setFilename($filename); 
 			}
 			
+			// ToDo: Issue #7 - add ability to initialize more properties with constructor call
 		}
 	
 		
 		// Our getters, no surprises here
 		
 		public function getFilename(){
+
 			return $this->filename;
+
 		}
 		
 		public function getHeaders(){
+
 			return $this->headers;
+
 		}
 		
 		public function getLineLength(){
+
 			return $this->lineLength;
+
 		}
 
 		public function getfileData(){
+
 			return $this->fileData;
+
 		}
 		
 		public function getNumRows(){
+
 			$numRows = 0;
 			
 			if ($this->fileData) {
+
 				$numRows = count($this->fileData);
+
 			}
 			
 			return $numRows;
+
 		}
 		
 		public function getHasHeaderRow(){
+
 			return $this->hasHeaderRow;
+
 		}
 		
 		
@@ -86,29 +105,49 @@
 				}
 				
 			else {
+
 				$errMsg = "$filename not found. Please verify path and filename.";
+
 				throw new Exception($errMsg);
+
 			}
-			
-			//ToDo: some kind of verification that we can access the file?
-			//ToDo: read the header row
-			//ToDo: read the data from file into an array
 		}
 		
 		public function setLineLength($lineLength) {
 		
 			// give developer means to override default fileLength value
 			
-			if (lineLength) {
+			if ($lineLength) {
+
 				$this->lineLength = $lineLength;
+
 			}
 			
 		}
 		
 		public function setHasHeaderRow($hasHeaderRow){
-			$this->hasHeaderRow = $hasHeaderRow;
+
+			// give developer means to override assumption of a header row
+
+			if ($hasHeaderRow) {
+
+				if (is_bool($hasHeaderRow)) {
+
+					$this->hasHeaderRow = $hasHeaderRow;
+
+				}
+
+				else {
+
+					$errMsg = "method setHasHeaderRow requires argument of true or false.";
+
+					throw new Exception($errMsg);
+
+				}
+			}
 		}
 		
+
 		// Our "utility functions", for internal use only (thus private)
 		
 		private function readHeaderRow(){
@@ -120,33 +159,50 @@
 				$handle = @fopen($this->filename, "r");
 
 				if ($handle) {
+
 					// read only the first line
 				    	$firstRow = fgets($handle, $this->lineLength);
 	
 					// if we believe our file has a header row, then . . .
 					if ($this->hasHeaderRow) {
+
 						// parse first row for field names, using two or more consecutive spaces
 						$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
 					}
+
 					else { // if we believe file does NOT have a header row
+
 						$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
+
+						// add generic Column names (Column1, Column2, etc.
 						$numFields = count($this->headers);
+
 						for ($x = 0; $x < $numFields; $x++) {
+
 							$this->headers[$x][0] = "Column" . ($x + 1) ;
+
 						}
 					}
 				
 					// close file when we're done
 					fclose($handle);
 				}
+
 				else {
+
+					// file exists, but we cannot open it for some reason
 					$errMsg = "Unable to open $filename. Please verify file permissions.";
+
 					throw new Exception($errMsg);
+
 				}
 			}
+
 			else {
-				// ToDo: error handling for bad file path, typo in filename, etc.
+
+				// error handling for bad file path, typo in filename, etc.
 				$errMsg = "$filename not found. Please verify path and filename.";
+
 				throw new Exception($errMsg);
 			}
 		}
@@ -164,7 +220,9 @@
 					
 					// does this file have a header row? If so, bypass it.
 					if ($this->hasHeaderRow) {
+
 						$firstRow = fgets($handle, $this->lineLength);
+
 						}
 					
 					// and process the remaining rows of the file
@@ -191,10 +249,12 @@
 						$this->fileData[] = $rowData;
     				}
     				
-				// unexpected file read termination
+				// if file handle is lost/broken before we reach end of file
     				if (!feof($handle)) {
-        				echo "Error: unexpected fgets() fail\n";
-						// TODO: create more robust error handling
+
+					$errMsg = "Error while reading the file.";
+					throw new Exception($errMsg);					
+
     				}
     				
     				fclose($handle);
@@ -203,15 +263,27 @@
 			
 		}
 		
-		// Our "Conversion" function
+		// Our "Bare Bones JSON Conversion" function
 
 		public function toJSON(){
 		
 			$JSONresult = "";
 			
 			$JSONresult = json_encode($this->fileData);
-				
-			return $JSONresult;
+
+			// if our result is not false (i.e. no error)
+			if ($JSONresult != false) {
+
+				return $JSONresult;
+
+			}
+			
+			else { // if there was a problem
+
+				$errMsg = json_last_error();
+				throw new Exception($errMsg);
+
+			}
 		}
 
 	}
