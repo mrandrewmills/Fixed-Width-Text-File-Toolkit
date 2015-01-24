@@ -26,16 +26,31 @@
 		
 		// Our constructor uses class name instead of __constructor to work with older versions of PHP
 		
-		function FixedWidthFile($filename) {
+		function FixedWidthFile($filename, $lineLength, $hasHeaderRow) {
 			
 			// if we received a filename
 			if ($filename) { 
 			
 				// pass it on to the setter function 
 				$this->setFilename($filename); 
+
 			}
 			
-			// ToDo: Issue #7 - add ability to initialize more properties with constructor call
+			// if we received lineLength override
+			if ($lineLength) {
+
+				// pass it on to our setter function
+				$this->setLineLength($lineLength);
+
+			}
+
+			// if we received hasHeaderRow override
+			if ($hasHeaderRow) {
+
+				// pass it on to our setter function
+				$this->setHasHeaderRow($hasHeaderRow);
+
+			}
 		}
 	
 		
