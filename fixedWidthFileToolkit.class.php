@@ -21,7 +21,7 @@
 
 		private $fileData;
 
-		private $hasHeaderRow = true;
+		private $hasHeaderRow = true; // default value, override with setHasHeaderRow() as needed.
 
 
 		// Our constructor uses class name instead of __constructor to work with older versions of PHP
@@ -157,8 +157,6 @@
 
 			// give developer means to override assumption of a header row
 
-			if ($hasHeaderRow) {
-
 				if (is_bool($hasHeaderRow)) {
 
 					$this->hasHeaderRow = $hasHeaderRow;
@@ -172,7 +170,7 @@
 					throw new Exception($errMsg);
 
 				}
-			}
+
 		}
 
 
