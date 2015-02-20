@@ -28,14 +28,6 @@
 
 		function FixedWidthFile($filename, $lineLength, $hasHeaderRow) {
 
-			// if we received a filename
-			if ($filename) {
-
-				// pass it on to the setter function
-				$this->setFilename($filename);
-
-			}
-
 			// if we received lineLength override
 			if ($lineLength) {
 
@@ -51,6 +43,15 @@
 				$this->setHasHeaderRow($hasHeaderRow);
 
 			}
+
+			// if we received a filename
+			if ($filename) {
+
+				// pass it on to the setter function
+				$this->setFilename($filename);
+
+			}
+
 		}
 
 
@@ -151,7 +152,7 @@
 			}
 
 		}
-		
+
 		public function setHasHeaderRow($hasHeaderRow){
 
 			// give developer means to override assumption of a header row
