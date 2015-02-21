@@ -83,20 +83,18 @@ You can easily override the default configuration options with method calls befo
 *Note: You can also pass these configuration details into your constructor call, if you prefer conciseness to readability.*
 
 ```html
-	$myFile = new FixedWidthFile( "example.txt", 3000, false );
+	$myFile = new FixedWidthFile( "example.txt", 8000, false );
 ```
 
-At this point, the toolkit will read the file, parse the header row into columns and convert the data into an array of objects.
-
-You can retrieve the array of objects fairly easily, like this:
+Once the toolkit knows which textfile you want to work with, it will read that textfile, parse the header row into columns and convert the data into an array of objects. You can also retrieve the array of objects fairly easily, like this:
 
 ```html
 	$PHPresult = $myFile->getfileData();
 ```
 
+Or maybe you don't need to manipulate that information at all. Perhaps you just want to convert it to JSON for an AJAX message or some other purpose? 
 
-
-Or maybe you don't need to manipulate that information at all? Perhaps you just want to convert it to JSON for some AJAX message. The toolkit can do that, too:
+The toolkit can do that, too:
 
 ```html
 	$JSONresult = $myFile->toJSON();
