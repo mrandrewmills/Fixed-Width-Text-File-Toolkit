@@ -2,10 +2,9 @@
 	/**
  	 * Fixed Width Text File Toolkit
 	 *
-	 * PHP class to help extract information from fixed width text files as easily as possible.
+	 * I help extract information from fixed width text files as easily as possible.
 	 *
 	 * https://github.com/mrandrewmills/Fixed-Width-Text-File-Toolkit
-	 *
 	 *
 	 */
 
@@ -13,44 +12,34 @@
 
 		// Our properties
 
-		private $filename;
+		private $filename; 		// set with constructor or setFilename() method
 
-		private $headers;
+		private $headers;			// read-only, used internally
 
-		private $lineLength = 4096; // default value, override with setFileLength() as needed
+		private $lineLength; 	// set with setLineLength(), or constructor (defaults to 4096)
 
-		private $fileData;
+		private $fileData;		// read-only, used internally
 
-		private $hasHeaderRow = true; // default value, override with setHasHeaderRow() as needed.
+		private $hasHeaderRow; // set with setHasHeaderRow(), or constructor (defaults to true)
 
 
 		// Our constructor uses class name instead of __constructor to work with older versions of PHP
 
-		function FixedWidthFile($filename, $lineLength, $hasHeaderRow) {
+		function FixedWidthFile($filename, $lineLength = 4096, $hasHeaderRow = true) {
 
-			// if we received lineLength override
-			if ($lineLength) {
-
-				// pass it on to our setter function
+				// pass the lineLength value on to our setter function
 				$this->setLineLength($lineLength);
 
-			}
-
-			// if we received hasHeaderRow override
-			if ($hasHeaderRow) {
-
-				// pass it on to our setter function
+				// pass the hasHeaderRow value on to our setter function
 				$this->setHasHeaderRow($hasHeaderRow);
 
-			}
+				// if we received a filename
+				if ($filename) {
 
-			// if we received a filename
-			if ($filename) {
+					// then pass it on to the setter function
+					$this->setFilename($filename);
 
-				// pass it on to the setter function
-				$this->setFilename($filename);
-
-			}
+				}
 
 		}
 
@@ -102,7 +91,7 @@
 		}
 
 
-		// Our setters, but some of our properties are not meant to be accessible (i.e. internal use only)
+		// Our setters, but some properties are intentionally not exposed
 
 		public function setFilename($filename){
 
@@ -133,15 +122,13 @@
 
 			// give developer means to override default fileLength value
 
-			if ($lineLength) {
-
-				if (is_int($lineLength)) {
+			if (is_int($lineLength)) {
 
 					$this->lineLength = $lineLength;
 
 				}
 
-				else {
+			else {
 
 					$errMsg = "method setLineLength requires argument of an integer.";
 
@@ -149,13 +136,11 @@
 
 				}
 
-			}
-
 		}
 
 		public function setHasHeaderRow($hasHeaderRow){
 
-			// give developer means to override assumption of a header row
+				// give developer means to override assumption of a header row
 
 				if (is_bool($hasHeaderRow)) {
 
@@ -187,7 +172,7 @@
 				if ($handle) {
 
 					// read only the first line
-				    	$firstRow = fgets($handle, $this->lineLength);
+				  $firstRow = fgets($handle, $this->lineLength);
 
 					// if we believe our file has a header row, then . . .
 					if ($this->hasHeaderRow) {
