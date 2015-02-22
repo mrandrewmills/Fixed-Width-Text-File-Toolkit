@@ -86,16 +86,16 @@ You can easily override the default configuration options with method calls befo
 	$myFile = new FixedWidthFile( "example.txt", 8000, false );
 ```
 
-Once the toolkit knows which textfile you want to work with, it will read that textfile, parse the header row into columns and convert the data into an array of objects. You can also retrieve the array of objects fairly easily, like this:
+Once the toolkit knows which textfile you want to work with, it will read that textfile, parse the header row into columns and convert the data into an array of objects. What happens next is up to you, but here are possibile suggestions:
 
-```html
-	$PHPresult = $myFile->getfileData();
-```
-
-Or maybe you don't need to manipulate that information at all. Perhaps you just want to convert it to JSON for an AJAX message or some other purpose? 
-
-The toolkit can do that, too:
+If you only want to convert the extracted textfile data into JSON format, there's a toJSON() method in the toolkit for your convenience.
 
 ```html
 	$JSONresult = $myFile->toJSON();
+```
+
+But if you want to use PHP's [considerable aresenal of array functions](http://php.net/manual/en/ref.array.php) on the array of objects, you will need to retrieve it with the getFileData() method first.
+
+```html
+	$PHPresult = $myFile->getfileData();
 ```
