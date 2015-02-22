@@ -292,10 +292,13 @@
 			else { // if there was a problem
 
 				$errMsg = json_last_error();
+
 				throw new Exception($errMsg);
 
 			}
+
 		}
 
 	}
+
 ?>
