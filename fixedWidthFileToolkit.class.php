@@ -12,15 +12,17 @@
 
 		// Our properties
 
-		private $filename; 		// set with constructor or setFilename() method
+		private $filename; // set with constructor or setFilename() method
 
-		private $headers;			// read-only, used internally
+		private $headers; // read-only, used internally
 
-		private $lineLength; 	// set with setLineLength(), or constructor (defaults to 4096)
+		private $lineLength; // set with setLineLength(), or constructor (defaults to 4096)
 
-		private $fileData;		// read-only, used internally
+		private $fileData; // read-only, used internally
 
 		private $hasHeaderRow; // set with setHasHeaderRow(), or constructor (defaults to true)
+
+                private $filter;
 
 
 		// Our constructor uses class name instead of __constructor to work with older versions of PHP
@@ -176,6 +178,9 @@
 
 					// if we believe our file has a header row, then . . .
 					if ($this->hasHeaderRow) {
+					
+						// so we can ignore repeating header rows in the data, if there are any later
+						$this->filter[] = $firstRow;
 
 						// parse first row for field names, using two or more consecutive spaces
 						$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
@@ -238,27 +243,35 @@
 
 					// and process the remaining rows of the file
 					while (($buffer = fgets($handle, $this->lineLength)) !== false) {
+					
+						if ( in_array($buffer, $this->filter) ) {
+						
+							// ToDo: write entry to warning log?
+						
+						}
+						else {
+        						$numFields = count($this->headers);
 
-        					$numFields = count($this->headers);
+							// find out how long one line is
+							$fieldLength = strlen($buffer);
 
-						// find out how long one line is
-						$fieldLength = strlen($buffer);
+							$rowData = Array();
 
-						$rowData = Array();
+							// working our way BACKWARDS through the array
+							for ($x = $numFields - 1; $x >= 0; $x--) {
+	
+								$fieldLength = $fieldLength - $this->headers[$x][1];
+	
+								$rowData[$this->headers[$x][0]] = rtrim(substr($buffer, $this->headers[$x][1], $fieldLength));
 
-						// working our way BACKWARDS through the array
-						for ($x = $numFields - 1; $x >= 0; $x--) {
-
-							$fieldLength = $fieldLength - $this->headers[$x][1];
-
-							$rowData[$this->headers[$x][0]] = rtrim(substr($buffer, $this->headers[$x][1], $fieldLength));
-
-							$fieldLength = $this->headers[$x][1];
+								$fieldLength = $this->headers[$x][1];
 							}
 
 						// when we've got the current row sorted, add it to the more permanent pile
 						$this->fileData[] = $rowData;
-    				}
+						
+						}
+    					}
 
 				// if file handle is lost/broken before we reach end of file
     				if (!feof($handle)) {
