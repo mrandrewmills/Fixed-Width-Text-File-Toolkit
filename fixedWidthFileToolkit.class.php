@@ -159,6 +159,12 @@
 				}
 
 		}
+		
+		public function addFilter($filterText) {
+		
+			$this->filter[] = $filterText;
+		
+		}
 
 
 		// Our "utility functions", for internal use only (thus private)
@@ -180,7 +186,8 @@
 					if ($this->hasHeaderRow) {
 					
 						// so we can ignore repeating header rows in the data, if there are any later
-						$this->filter[] = $firstRow;
+						// $this->filter[] = $firstRow;
+						$this->addFilter($firstRow);
 
 						// parse first row for field names, using two or more consecutive spaces
 						$this->headers = preg_split('/(?:\s\s+|\n|\t)/', $firstRow, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
