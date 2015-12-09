@@ -34,7 +34,7 @@
 
 				// pass the hasHeaderRow value on to our setter function
 				$this->setHasHeaderRow($hasHeaderRow);
-
+				
 				// if we received a filename
 				if ($filename) {
 
@@ -250,13 +250,28 @@
 
 					// and process the remaining rows of the file
 					while (($buffer = fgets($handle, $this->lineLength)) !== false) {
-					
-						if ( in_array($buffer, $this->filter) ) {
 						
+						$addThisLine = true;
+							
+						if (in_array($buffer, $this->filter)) {
+						
+							$addThisLine = false;
 							// ToDo: write entry to warning log?
+
+							}
+							
+						// parse current line the same way we parsed the header row line
+						$fields = preg_split('/(?:\s\s+|\n|\t)/', $buffer, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
 						
+						// if the column count does not match
+						if ( count($fields) != count($this->headers) ) {
+							// throw an error to make user aware there's an issue
+							$errMsg = "Columnar mismatch with: " . $buffer;
+							throw new Exception($errMsg);
 						}
-						else {
+							
+						if ($addThisLine === true) {						
+																
         						$numFields = count($this->headers);
 
 							// find out how long one line is
@@ -276,7 +291,6 @@
 
 						// when we've got the current row sorted, add it to the more permanent pile
 						$this->fileData[] = $rowData;
-						
 						}
     					}
 
@@ -292,6 +306,14 @@
 				}
 			}
 
+		}
+		
+		// Our de-duplication function
+		// credit: http://stackoverflow.com/questions/307674/how-to-remove-duplicate-values-from-a-multi-dimensional-array-in-php
+		public function deDuplicate(){
+		
+			$this->fileData = array_map("unserialize", array_unique(array_map("serialize", $this->fileData)));
+		
 		}
 
 		// Our "Bare Bones JSON Conversion" function
