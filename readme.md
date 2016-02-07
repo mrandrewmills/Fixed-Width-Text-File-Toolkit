@@ -44,6 +44,10 @@ Q. IS IT FAST?
 
 A. I've parsed a 17MB file with 50,000 lines in less than 4 seconds. Your mileage will vary, depending upon how much available RAM your computer has and how large your textfile is.
 
+Q. WHAT HAPPENED TO THE DEMO?
+
+A. Even though the demo data I used was public information released in [a weekly report by the Fairfax County Police Department](http://www.fairfaxcounty.gov/police/crime/arrest.txt), some folks (like jreacher) have falsely accused me of exposing their "private information." Quite frankly, I removed the data and the demo because I've got better things to do than deal with entitled crybabies who are upset because their names turned up in a Google search after they were arrested or received a ticket.
+
 ##Tutorial
 
 To use the Fixed Width File Toolkit in your PHP script, you first need to include it. Like so:
