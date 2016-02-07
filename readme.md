@@ -1,6 +1,6 @@
 #FIXED WIDTH TEXT FILE TOOLKIT
 
-Imagine this: You want to work with Open Data from a local/state/federal agency, but the specific data you want comes in only one format-- fixed width text files. 
+Let's say you want to work with Open Data from a local/state/federal agency, but the data comes in only one format: fixed width text files. 
 
 Why couldn't it be JSON? Or XML?
 
@@ -10,7 +10,7 @@ Even if it were CSV you wouldn't be spending your afternoon writing custom code 
 	* do a series of string splits at a, b, c, d, etc. starting character positions 
 	* loading the data into an array to encode/transform it to a more usable format
 
-I created the "Fixed Width Text File Toolkit" so I would have a set of useful functions that could quickly and easily analyze a fixed width text file, grab the field names from the header row, "automagically" (sic) determine the starting character position for each data field, and then convert that data into a multi-dimensional array.
+I created the "Fixed Width Text File Toolkit" so I could quickly and easily analyze a fixed width text file, grab the field names from the header row, "automagically" (sic) determine the starting character position for each data field, and then convert that data into a multi-dimensional array.
 
 ## Contents
 
@@ -22,7 +22,7 @@ I created the "Fixed Width Text File Toolkit" so I would have a set of useful fu
 
 Q. WHY DID YOU MAKE THIS WHEN THERE ARE ALREADY OTHER TOOLS/PRODUCTS AVAILABLE?
 
-A. I made this because I wanted to learn more about text-processing functions within PHP and wanted reusable code to deal with Fixed Width Text Files. I decided to share it with others because I'd like to see them improve upon my code and take it in directions that never would have occurred to me.
+A. I wanted to learn more about text-processing functions within PHP and wanted reusable code to deal with Fixed Width Text Files. I decided to share it because I'd like to others improve upon my code and take it in directions that never would have occurred to me.
 
 Q. CAN THIS TOOLKIT WORK WITH REMOTE FILES OVER HTTP:// OR HTTPS://?
 
@@ -30,7 +30,7 @@ A. This toolkit is intended for *local* files, _not remote_ ones.
 
 Q. CAN YOU ADD FEATURE X, Y OR Z?
 
-A. It depends on the specifics of the feature, whether it makes sense to be part of this toolkit, and how difficult it would be to implement. Drop me a line explaining what you have in mind, and we can discuss it. However, just because I might not have time or inclination to add a feature that you want, that does not mean you can't add it yourself.
+A. It depends on the specifics of the feature, whether it makes sense to be part of this toolkit, and how difficult it would be to implement. Contact me to explain what you have in mind, and we can discuss it. However, if I do not have time or inclination to add a feature you want, you can always fork this project to add the feature yourself.
 
 Q. MY TEXTFILE DOES NOT HAVE A HEADER ROW. WILL THIS TOOLKIT HANDLE THAT?
 
@@ -42,7 +42,7 @@ A. Textfiles can be big for two reasons: long line widths and lots of rows. If y
 
 Q. IS IT FAST?
 
-A. It can't do the Kessel Run in 12 parsecs-- but I've parsed a 17MB file with 50,000 lines in less than 4 seconds. Your mileage will vary, depending upon how much available RAM your computer has and how large your textfile is.
+A. I've parsed a 17MB file with 50,000 lines in less than 4 seconds. Your mileage will vary, depending upon how much available RAM your computer has and how large your textfile is.
 
 ##Tutorial
 
