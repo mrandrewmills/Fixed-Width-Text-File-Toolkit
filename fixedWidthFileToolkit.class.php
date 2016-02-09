@@ -22,18 +22,23 @@
 
 		private $hasHeaderRow; // set with setHasHeaderRow(), or constructor (defaults to true)
 
+		private $howStrict; // set with setStrict(), or constructor (defaults to MEDIUM)
+
                 private $filter;
 
 
 		// Our constructor uses class name instead of __constructor to work with older versions of PHP
 
-		function FixedWidthFile($filename, $lineLength = 4096, $hasHeaderRow = true) {
+		function FixedWidthFile($filename, $lineLength = 4096, $hasHeaderRow = true, $howStrict = "MEDIUM") {
 
 				// pass the lineLength value on to our setter function
 				$this->setLineLength($lineLength);
 
 				// pass the hasHeaderRow value on to our setter function
 				$this->setHasHeaderRow($hasHeaderRow);
+				
+				// pass the howStrict value on to our setter function
+				$this->setHowStrict($howStrict);
 				
 				// if we received a filename
 				if ($filename) {
@@ -160,6 +165,12 @@
 
 		}
 		
+		public function setHowStrict($howStrict){
+		
+			$this->howStrict = $howStrict;
+		
+		}
+		
 		public function addFilter($filterText) {
 		
 			$this->filter[] = $filterText;
@@ -265,9 +276,29 @@
 						
 						// if the column count does not match
 						if ( count($fields) != count($this->headers) ) {
-							// throw an error to make user aware there's an issue
-							$errMsg = "Columnar mismatch with: " . $buffer;
-							throw new Exception($errMsg);
+							
+							// ToDo: switch statement based on howStrict property
+							switch ($this->howStrict) {
+							
+								case MEDIUM:
+								
+								//ToDo: log the mismatch, but keep processing rest of file
+								$addThisLine = false;
+								
+								break;
+								
+								case HIGH:
+								
+								// throw an error to make user aware there's an issue
+								$errMsg = "Columnar mismatch with: " . $buffer;
+								throw new Exception($errMsg);
+
+								break;
+								
+								default:
+								// TBD
+							}
+							
 						}
 							
 						if ($addThisLine === true) {						
