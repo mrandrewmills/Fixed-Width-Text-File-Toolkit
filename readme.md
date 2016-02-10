@@ -44,6 +44,10 @@ Q. IS IT FAST?
 
 A. I've parsed a 17MB file with 50,000 lines in less than 4 seconds. Your mileage will vary, depending upon how much available RAM your computer has and how large your textfile is.
 
+Q. MY TEXTFILE IS NOT PERFECT. CAN YOUR TOOL HANDLE/FILTER "BAD" DATA?
+
+A. Possibly. Depending upon what exactly is wrong with your data, the setHowStrict() method might help. You can learn more about that in the tutorial below.
+
 Q. WHAT HAPPENED TO THE DEMO?
 
 A. Even though the demo data I used was public information released in [a weekly report by the Fairfax County Police Department](http://www.fairfaxcounty.gov/police/crime/arrest.txt), some folks (like jreacher) have falsely accused me of exposing their "private information." Quite frankly, I removed the data and the demo because I've got better things to do than deal with entitled crybabies who are upset because their names turned up in a Google search after they were arrested or received a ticket.
@@ -72,27 +76,33 @@ The default configuration options assume:
 
 * Your text file has a header row.
 * No single line in your text file exceeds 4,096 characters.
+* If a line has data that overruns the column it is in or is missing data, skip that line and process the rest.
 
-But what if our textfile does not have a header row, and/or it has exceptionally long lines in it? No problem.
+But what if our textfile does not have a header row?
+Or it has exceptionally long lines in it? 
+Or it contains "bad" data?
 
-You can easily override the default configuration options with method calls before opening the textfile:
+Don't worry, you can easily override the default configuration options with method calls before opening the textfile:
 
 ```html
 	$myFile = new FixedWidthFile();		// create an instance of the toolkit
+	
 	$myFile->setLineLength( 8000 );        	// for long lines of text
 	$myFile->setHasHeaderRow( false );     	// for files that do not have a header row
-	$myFile->setFilename( "example.txt" ); 	// AFTER the config options are set, you tell it the filename
+	$myFile->setHowStrict("HIGH");		// if line has an empty column, or runs into next column, throw an error.
+	
+	$myFile->setFilename( "example.txt" ); 	// AFTER the config options are set, THEN you tell it the filename
 ```
 
 *Note: You can also pass these configuration details into your constructor call, if you prefer conciseness to readability.*
 
 ```html
-	$myFile = new FixedWidthFile( "example.txt", 8000, false );
+	$myFile = new FixedWidthFile( "example.txt", 8000, false, "HIGH");
 ```
 
 Once the toolkit knows which textfile you want to work with, it will read that textfile, parse the header row into columns and convert the data into an array of objects. What happens next is up to you, but here are possibile suggestions:
 
-If you only want to convert the extracted textfile data into JSON format, there's a toJSON() method in the toolkit for your convenience.
+If you want only to convert the extracted textfile data into JSON format, there's a toJSON() method in the toolkit for your convenience.
 
 ```html
 	$JSONresult = $myFile->toJSON();
