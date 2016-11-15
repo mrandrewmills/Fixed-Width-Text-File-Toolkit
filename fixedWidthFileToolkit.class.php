@@ -96,6 +96,12 @@
 			return $this->hasHeaderRow;
 
 		}
+		
+		pubic function getHowStrict(){
+		
+			return $this->howStrict;
+		
+		}
 
 
 		// Our setters, but some properties are intentionally not exposed
