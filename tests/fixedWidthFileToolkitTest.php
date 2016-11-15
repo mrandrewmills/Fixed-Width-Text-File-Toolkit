@@ -11,6 +11,14 @@ class fixedWidthFileToolkitTest extends PHPUnit_Framework_TestCase{
     $result = $myFile->getFilename();
     // compare result vs. expectation for validation
     $this->assertEquals("example.txt", $result);
+
+    // check the default values for lineLength, hasHeaderRow and howStrict
+    $result = $myFile->getLineLength();
+    $this->assertEquals(4096, $result);
+    $result = $myFile->getHasHeaderRow();
+    $this->assertEquals(true, $result);
+    $result = $myFile->getHowStrict();
+    $this->assertEquals("MEDIUM", $result);
   }
 }
 ?>
