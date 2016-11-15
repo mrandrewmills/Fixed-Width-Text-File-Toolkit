@@ -97,7 +97,7 @@
 
 		}
 		
-		pubic function getHowStrict(){
+		public function getHowStrict(){
 		
 			return $this->howStrict;
 		
