@@ -1,4 +1,4 @@
-#FIXED WIDTH TEXT FILE TOOLKIT
+# FIXED WIDTH TEXT FILE TOOLKIT
 
 Let's say you want to work with Open Data from a local/state/federal agency, but the data comes in only one format: fixed width text files. 
 
@@ -12,13 +12,13 @@ Even if it were CSV you wouldn't be spending your afternoon writing custom code 
 
 I created the "Fixed Width Text File Toolkit" so I could quickly and easily analyze a fixed width text file, grab the field names from the header row, "automagically" (sic) determine the starting character position for each data field, and then convert that data into a multi-dimensional array.
 
-## Contents
+Contents
 
 [Frequently Asked Questions](#frequently-asked-questions)
 
 [Tutorial](#tutorial)
 
-##Frequently Asked Questions#
+## Frequently Asked Questions
 
 Q. WHY DID YOU MAKE THIS WHEN THERE ARE ALREADY OTHER TOOLS/PRODUCTS AVAILABLE?
 
@@ -48,11 +48,7 @@ Q. MY TEXTFILE IS NOT PERFECT. CAN YOUR TOOL HANDLE/FILTER "BAD" DATA?
 
 A. Possibly. Depending upon what exactly is wrong with your data, the setHowStrict() method might help. You can learn more about that in the tutorial below.
 
-Q. WHAT HAPPENED TO THE DEMO?
-
-A. Even though the demo data I used was public information released in [a weekly report by the Fairfax County Police Department](http://www.fairfaxcounty.gov/police/crime/arrest.txt), some folks (like jreacher) have falsely accused me of exposing their "private information." Quite frankly, I removed the data and the demo because I've got better things to do than deal with entitled crybabies who are upset because their names turned up in a Google search after they were arrested or received a ticket.
-
-##Tutorial
+## Tutorial
 
 To use the Fixed Width File Toolkit in your PHP script, you first need to include it. Like so:
 
