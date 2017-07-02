@@ -2,7 +2,7 @@
 
   include 'fixedWidthFileToolkit.class.php';
 
-  class fixedWidthFileToolkitTest extends PHPUnit_Framework_TestCase{
+  class fixedWidthFileToolkitTest extends \PHPUnit\Framework\TestCase{
 
     public function testFilename(){
       // create an instance of the FixedWidthFile class
