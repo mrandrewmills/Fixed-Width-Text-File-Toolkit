@@ -24,22 +24,22 @@
 
 		private $howStrict; // set with setStrict(), or constructor (defaults to MEDIUM)
 
-                private $filter;
+    private $filter;
 
 
 		// Our constructor uses class name instead of __constructor to work with older versions of PHP
 
-		function FixedWidthFile($filename, $lineLength = 4096, $hasHeaderRow = true, $howStrict = "MEDIUM") {
+		function __construct($filename, $lineLength = 4096, $hasHeaderRow = true, $howStrict = "MEDIUM") {
 
 				// pass the lineLength value on to our setter function
 				$this->setLineLength($lineLength);
 
 				// pass the hasHeaderRow value on to our setter function
 				$this->setHasHeaderRow($hasHeaderRow);
-				
+
 				// pass the howStrict value on to our setter function
 				$this->setHowStrict($howStrict);
-				
+
 				// if we received a filename
 				if ($filename) {
 
@@ -96,11 +96,11 @@
 			return $this->hasHeaderRow;
 
 		}
-		
+
 		public function getHowStrict(){
-		
+
 			return $this->howStrict;
-		
+
 		}
 
 
@@ -170,17 +170,17 @@
 				}
 
 		}
-		
+
 		public function setHowStrict($howStrict){
-		
+
 			$this->howStrict = $howStrict;
-		
+
 		}
-		
+
 		public function addFilter($filterText) {
-		
+
 			$this->filter[] = $filterText;
-		
+
 		}
 
 
@@ -201,7 +201,7 @@
 
 					// if we believe our file has a header row, then . . .
 					if ($this->hasHeaderRow) {
-					
+
 						// so we can ignore repeating header rows in the data, if there are any later
 						// $this->filter[] = $firstRow;
 						$this->addFilter($firstRow);
@@ -267,48 +267,48 @@
 
 					// and process the remaining rows of the file
 					while (($buffer = fgets($handle, $this->lineLength)) !== false) {
-						
+
 						$addThisLine = true;
-							
+
 						if (in_array($buffer, $this->filter)) {
-						
+
 							$addThisLine = false;
 							// ToDo: write entry to warning log?
 
 							}
-							
+
 						// parse current line the same way we parsed the header row line
 						$fields = preg_split('/(?:\s\s+|\n|\t)/', $buffer, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
-						
+
 						// if the column count does not match
 						if ( count($fields) != count($this->headers) ) {
-							
+
 							// ToDo: switch statement based on howStrict property
 							switch ($this->howStrict) {
-							
+
 								case MEDIUM:
-								
+
 								//ToDo: log the mismatch, but keep processing rest of file
 								$addThisLine = false;
-								
+
 								break;
-								
+
 								case HIGH:
-								
+
 								// throw an error to make user aware there's an issue
 								$errMsg = "Columnar mismatch with: " . $buffer;
 								throw new Exception($errMsg);
 
 								break;
-								
+
 								default:
 								// TBD
 							}
-							
+
 						}
-							
-						if ($addThisLine === true) {						
-																
+
+						if ($addThisLine === true) {
+
         						$numFields = count($this->headers);
 
 							// find out how long one line is
@@ -318,9 +318,9 @@
 
 							// working our way BACKWARDS through the array
 							for ($x = $numFields - 1; $x >= 0; $x--) {
-	
+
 								$fieldLength = $fieldLength - $this->headers[$x][1];
-	
+
 								$rowData[$this->headers[$x][0]] = rtrim(substr($buffer, $this->headers[$x][1], $fieldLength));
 
 								$fieldLength = $this->headers[$x][1];
@@ -344,13 +344,13 @@
 			}
 
 		}
-		
+
 		// Our de-duplication function
 		// credit: http://stackoverflow.com/questions/307674/how-to-remove-duplicate-values-from-a-multi-dimensional-array-in-php
 		public function deDuplicate(){
-		
+
 			$this->fileData = array_map("unserialize", array_unique(array_map("serialize", $this->fileData)));
-		
+
 		}
 
 		// Our "Bare Bones JSON Conversion" function
