@@ -1,5 +1,6 @@
 <?php
 
+  require_once 'PHPUnit/Autoload.php';
   include 'fixedWidthFileToolkit.class.php';
 
 class fixedWidthFileToolkitTest extends PHPUnit_Framework_TestCase{
